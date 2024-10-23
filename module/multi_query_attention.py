@@ -39,4 +39,3 @@ class MultiQueryAttention(nn.Module):
         out = self.dropout(out)
 
         return out, attn
-

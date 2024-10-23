@@ -25,5 +25,5 @@ class ScaleDotProductAttention(nn.Module):
         attn = self.softmax(attn)
         attn = self.dropout(attn)
         # (b_sz, n_head, n_token, n_token) x (b_sz, n_head, n_token, d_k) = (b_sz, n_head, n_token, d_k)
-        output = torch.matmul(attn, v)
+        output = attn @ v
         return output, attn

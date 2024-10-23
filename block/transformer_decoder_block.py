@@ -25,7 +25,7 @@ class DecoderLayer(nn.Module):
         # 3. encoder output attention
         if enc_output:
             residual = x
-            x, enc_attn = self.enc_attn(enc_output, enc_output, enc_output, src_mask)
+            x, enc_attn = self.enc_attn(enc_output, enc_output, dec_input, src_mask)
 
             # 4. add & norm
             x = self.norm2(residual + x)
