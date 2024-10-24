@@ -17,7 +17,10 @@ class MultiHeadAttention(nn.Module):
         self.w_o = nn.Linear(d_model, d_model)
         self.dropout = nn.Dropout(p=dropout)
         if mask:
+            self.enable_mask = True
             self.register_buffer('mask', torch.triu(torch.ones(context_length, context_length), diagonal=1))
+        else:
+            self.enable_mask = False
 
     def forward(self, q, k, v):
         """
@@ -37,7 +40,10 @@ class MultiHeadAttention(nn.Module):
         # (b_sz, n_head, n_token, d_k)
         q, k, v = q.transpose(1, 2), k.transpose(1, 2), v.transpose(1, 2)
 
-        out, attn = self.attn(q, k, v, self.mask.bool()[:n_token, :n_token])
+        if self.enable_mask:
+            out, attn = self.attn(q, k, v, self.mask.bool()[:n_token, :n_token])
+        else:
+            out, attn = self.attn(q, k, v)
 
         # (b_sz, n_token, d_model)
         out = out.transpose(1, 2).contiguous().view(b_sz, -1, self.n_head * self.d_k)
