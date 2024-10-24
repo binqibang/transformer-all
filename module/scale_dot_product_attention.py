@@ -17,11 +17,11 @@ class ScaleDotProductAttention(nn.Module):
         :param v: (b_sz, n_head, n_token, d_k)
         :param mask:
         """
-        d_k = q.shape[-1]
+        b_sz, n_head, n_token, d_k = q.shape
         # (b_sz, n_head, n_token, d_k) x (b_sz, n_head, d_k, n_token) = (b_sz, n_head, n_token, n_token)
         attn = torch.matmul(q, k.transpose(-1, -2)) / d_k ** 0.5
-        if mask:
-            attn = attn.masked_fill(mask, -1e9)
+        if mask is not None:
+            attn = attn.masked_fill(mask, -float('inf'))
         attn = self.softmax(attn)
         attn = self.dropout(attn)
         # (b_sz, n_head, n_token, n_token) x (b_sz, n_head, n_token, d_k) = (b_sz, n_head, n_token, d_k)

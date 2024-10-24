@@ -2,6 +2,7 @@ import tiktoken
 import torch
 
 from dataset.gpt_dataloader import create_dataloader_v1
+from module.multi_head_attention import MultiHeadAttention
 
 
 def test_dataloader():
@@ -22,6 +23,8 @@ def test_dataloader():
     token_embedding_layer = torch.nn.Embedding(vocab_size, output_dim)
     pos_embedding_layer = torch.nn.Embedding(context_length, output_dim)
 
+    input_embeddings = None
+
     for batch in dataloader:
         x, y = batch
 
@@ -34,4 +37,14 @@ def test_dataloader():
 
         assert input_embeddings.shape == torch.Size([batch_size, max_length, output_dim])
 
+    return input_embeddings
 
+
+def test_data_forward():
+    batch_size, max_length, output_dim = 8, 16, 256
+    x = test_dataloader()
+    mask = torch.triu(torch.ones(max_length, max_length), diagonal=1)
+    d_k, n_head = 64, 4
+    attn = MultiHeadAttention(d_model=d_k * n_head, num_heads=n_head)
+    out, _ = attn(x, x, x, mask)
+    assert out.shape == x.shape

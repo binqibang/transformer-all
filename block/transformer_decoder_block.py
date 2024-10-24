@@ -3,9 +3,9 @@ from module.multi_head_attention import MultiHeadAttention
 from module.ffn import PositionWiseFeedForward
 
 
-class DecoderLayer(nn.Module):
+class DecoderBlock(nn.Module):
     def __init__(self, d_model, n_head, d_ff, dropout=0.1):
-        super(DecoderLayer, self).__init__()
+        super(DecoderBlock, self).__init__()
         self.slf_attn = MultiHeadAttention(d_model, n_head, dropout)
         self.enc_attn = MultiHeadAttention(d_model, n_head, dropout)
         self.ffn = PositionWiseFeedForward(d_model, d_ff)
