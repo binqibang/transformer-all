@@ -1,11 +1,10 @@
 import torch.nn as nn
-import torch
 
 from module.scale_dot_product_attention import ScaleDotProductAttention
 
 
 class MultiHeadAttention(nn.Module):
-    def __init__(self, d_model, num_heads, context_length, dropout=0.1, mask=False):
+    def __init__(self, d_model, num_heads, dropout=0.1):
         super(MultiHeadAttention, self).__init__()
         assert d_model % num_heads == 0
         self.d_k = d_model // num_heads
@@ -16,18 +15,14 @@ class MultiHeadAttention(nn.Module):
         self.w_v = nn.Linear(d_model, d_model)
         self.w_o = nn.Linear(d_model, d_model)
         self.dropout = nn.Dropout(p=dropout)
-        if mask:
-            self.enable_mask = True
-            self.register_buffer('mask', torch.triu(torch.ones(context_length, context_length), diagonal=1))
-        else:
-            self.enable_mask = False
 
-    def forward(self, q, k, v):
+    def forward(self, q, k, v, mask=None):
         """
         MultiHeadAttention(Q, K, V) = Concat(h1, h2, ...)W_o, h1 = Attention(QW_q, KW_k, VW_v)
         :param q: (b_sz, n_token, d_model)
         :param k: (b_sz, n_token, d_model)
         :param v: (b_sz, n_token, d_model)
+        :param mask: (n_token, n_token)
         :return: out, attn
         """
         b_sz, n_token, d_model = q.shape
@@ -40,10 +35,7 @@ class MultiHeadAttention(nn.Module):
         # (b_sz, n_head, n_token, d_k)
         q, k, v = q.transpose(1, 2), k.transpose(1, 2), v.transpose(1, 2)
 
-        if self.enable_mask:
-            out, attn = self.attn(q, k, v, self.mask.bool()[:n_token, :n_token])
-        else:
-            out, attn = self.attn(q, k, v)
+        out, attn = self.attn(q, k, v, mask.bool()[:n_token, :n_token])
 
         # (b_sz, n_token, d_model)
         out = out.transpose(1, 2).contiguous().view(b_sz, -1, self.n_head * self.d_k)

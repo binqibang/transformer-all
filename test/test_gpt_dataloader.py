@@ -41,9 +41,8 @@ def test_dataloader():
 
 
 def test_data_forward():
-    batch_size, max_length, output_dim = 8, 16, 256
     x = test_dataloader()
     d_k, n_head = 64, 4
-    attn = MultiHeadAttention(d_model=d_k * n_head, num_heads=n_head, context_length=max_length,)
+    attn = MultiHeadAttention(d_model=d_k * n_head, num_heads=n_head)
     out, _ = attn(x, x, x)
     assert out.shape == x.shape
