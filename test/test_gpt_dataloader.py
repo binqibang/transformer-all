@@ -6,7 +6,8 @@ from module.multi_head_attention import MultiHeadAttention
 
 
 def test_dataloader():
-    with open('../dataset/the-verdict.txt') as f:
+    file_path = '../dataset/the-verdict.txt'
+    with open(file_path) as f:
         raw_text = f.read()
 
     tokenizer = tiktoken.get_encoding('gpt2')
@@ -15,6 +16,8 @@ def test_dataloader():
     batch_size = 8
     dataloader = create_dataloader_v1(raw_text, tokenizer, batch_size=batch_size, max_length=max_length,
                                       stride=max_length)
+
+    print(f'total batch for {file_path}: {len(dataloader)}\n')
 
     vocab_size = 50257
     output_dim = 256
