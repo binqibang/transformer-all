@@ -3,7 +3,7 @@ import torch.cuda
 
 from dataset.gpt_dataloader import create_dataloader_v1
 from model.gpt2 import GPT
-from train.gpt_train import calc_loss_loader
+from train.gpt_train_simple import calc_loss_loader
 
 
 def test_loss():

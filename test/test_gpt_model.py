@@ -1,7 +1,8 @@
 import tiktoken
 import torch
 
-from model.gpt2 import GPT, generate_text_simple
+from model.gpt2 import GPT
+from util.generate import generate_text_simple
 
 GPT_CONFIG_124M = {
     "vocab_size": 50257,

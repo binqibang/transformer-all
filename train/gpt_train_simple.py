@@ -4,7 +4,8 @@ import torch
 import torch.nn.functional as F
 
 from dataset.gpt_dataloader import create_dataloader_v1
-from model.gpt2 import generate_text_simple, GPT
+from model.gpt2 import GPT
+from util.generate import generate_text_simple
 
 
 def text_to_token_ids(text, tokenizer):

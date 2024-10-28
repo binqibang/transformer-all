@@ -6,7 +6,7 @@ from module.ffn import PositionWiseFeedForward
 class GPTBlock(nn.Module):
     def __init__(self, d_model, num_heads, d_ff, dropout=0.1):
         super().__init__()
-        self.attn = MultiHeadAttention(d_model, num_heads, dropout=dropout)
+        self.mha = MultiHeadAttention(d_model, num_heads, dropout=dropout)
         self.norm1 = nn.LayerNorm(d_model)
         self.norm2 = nn.LayerNorm(d_model)
         self.ffn = PositionWiseFeedForward(d_model, d_ff, dropout=dropout)
@@ -16,7 +16,7 @@ class GPTBlock(nn.Module):
         # 1. attention
         residual = x
         x = self.norm1(x)
-        x, attn = self.attn(x, x, x, mask)
+        x, attn = self.mha(x, x, x, mask)
         x = self.dropout(x)
         x += residual
 

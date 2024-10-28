@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
 
-from train.gpt_train import train_main, plot_losses
+from train.gpt_train_simple import train_main, plot_losses
 
 
 def train_gpt():
