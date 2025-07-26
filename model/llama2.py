@@ -1,17 +1,17 @@
 import torch.nn as nn
 import torch
-from block.llama2_block import Llama2Block
+from block.llama2_block import LLAMA2Block
 from module.rms_norm import RMSNorm
 
 
-class Llama2(nn.Module):
+class LLAMA2(nn.Module):
     def __init__(self, llama2_config):
         super().__init__()
         context_length = llama2_config['context_length']
         self.token_embedding = nn.Embedding(llama2_config['vocab_size'], llama2_config['d_model'])
 
         self.transformer_blocks = nn.ModuleList(
-            [Llama2Block(llama2_config['d_model'], llama2_config['num_heads'], context_length,
+            [LLAMA2Block(llama2_config['d_model'], llama2_config['num_heads'], context_length,
                          llama2_config['d_ff'], llama2_config['dropout'])
              for _ in range(llama2_config['num_layers'])]
         )

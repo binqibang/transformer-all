@@ -78,10 +78,10 @@ def train_model_simple(model, train_loader, val_loader, optimizer, device, num_e
         model.train()  # Set model to training mode
 
         for input_batch, target_batch in train_loader:
-            optimizer.zero_grad()   # Reset loss gradients from previous batch iteration
+            optimizer.zero_grad()  # Reset loss gradients from previous batch iteration
             loss = calc_loss_batch(input_batch, target_batch, model, device)
-            loss.backward()         # Calculate loss gradients
-            optimizer.step()        # Update model weights using loss gradients
+            loss.backward()  # Calculate loss gradients
+            optimizer.step()  # Update model weights using loss gradients
             tokens_seen += input_batch.numel()
             global_step += 1
 
@@ -92,7 +92,7 @@ def train_model_simple(model, train_loader, val_loader, optimizer, device, num_e
                 train_losses.append(train_loss)
                 val_losses.append(val_loss)
                 track_tokens_seen.append(tokens_seen)
-                print(f"Ep {epoch+1} (Step {global_step:06d}): "
+                print(f"Ep {epoch + 1} (Step {global_step:06d}): "
                       f"Train loss {train_loss:.3f}, Val loss {val_loss:.3f}")
 
         # Print a sample text after each epoch
@@ -123,7 +123,6 @@ def plot_losses(epochs_seen, tokens_seen, train_losses, val_losses):
 
 
 def train_main(gpt_config, settings):
-
     torch.manual_seed(123)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

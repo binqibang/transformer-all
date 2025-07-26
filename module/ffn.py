@@ -16,7 +16,7 @@ class PositionWiseFeedForward(nn.Module):
         return self.w2(x)
 
 
-class Llama2FeedForward(nn.Module):
+class LLAMA2FeedForward(nn.Module):
     def __init__(self, d_model, d_ff):
         super().__init__()
         self.w1 = nn.Linear(d_model, d_ff)

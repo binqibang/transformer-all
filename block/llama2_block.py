@@ -1,16 +1,16 @@
 import torch.nn as nn
 from module.multi_head_attention import Llama2MHA
-from module.ffn import Llama2FeedForward
+from module.ffn import LLAMA2FeedForward
 from module.rms_norm import RMSNorm
 
 
-class Llama2Block(nn.Module):
+class LLAMA2Block(nn.Module):
     def __init__(self, d_model, num_heads, d_ff, context_length, dropout=0.1):
         super().__init__()
         self.mha = Llama2MHA(d_model, num_heads, context_length, dropout)
         self.norm1 = RMSNorm(d_model)
         self.norm2 = RMSNorm(d_model)
-        self.ffn = Llama2FeedForward(d_model, d_ff)
+        self.ffn = LLAMA2FeedForward(d_model, d_ff)
 
     def forward(self, x, mask):
         # 1. attention
