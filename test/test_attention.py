@@ -21,7 +21,7 @@ class TestAttention(unittest.TestCase):
         b_sz, n_head, seq_l, d_k = 32, 8, 16, 64
         x = torch.randn(b_sz, seq_l, n_head * d_k)
         mask = torch.triu(torch.ones(seq_l, seq_l), diagonal=1)
-        attn = MultiHeadAttention(d_model=d_k * n_head, num_heads=n_head)
+        attn = MultiHeadAttention(d_model=d_k * n_head, n_head=n_head)
         out, _ = attn(x, x, x, mask)
         assert out.shape == x.shape
 

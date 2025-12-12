@@ -10,7 +10,8 @@ from module.multi_head_attention import MultiHeadAttention
 class TestDataloader(unittest.TestCase):
 
     def test_dataloader(self):
-        file_path = '../dataset/the-verdict.txt'
+        import os; print(os.getcwd())
+        file_path = './dataset/the-verdict.txt'
         with open(file_path) as f:
             raw_text = f.read()
 

@@ -17,15 +17,15 @@ class DecoderBlock(nn.Module):
         enc_attn = None
         # 1. self attention
         residual = dec_input
-        x, slf_attn = self.slf_attn(dec_input, dec_input, dec_input, trg_mask)
+        x, slf_attn_weight = self.slf_attn(dec_input, dec_input, dec_input, trg_mask)
 
         # 2. add & norm
         x = self.norm1(residual + x)
 
         # 3. encoder output attention
-        if enc_output:
+        if enc_output is not None:
             residual = x
-            x, enc_attn = self.enc_attn(enc_output, enc_output, dec_input, src_mask)
+            x, enc_attn_weight = self.enc_attn(x, enc_output, enc_output, src_mask)
 
             # 4. add & norm
             x = self.norm2(residual + x)
@@ -37,4 +37,4 @@ class DecoderBlock(nn.Module):
         # 6. add & norm
         x = self.norm3(residual + x)
 
-        return x, slf_attn, enc_attn
+        return x, slf_attn_weight, enc_attn_weight

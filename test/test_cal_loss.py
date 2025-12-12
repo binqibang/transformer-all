@@ -15,7 +15,7 @@ class TestLossCalculation(unittest.TestCase):
 
         torch.manual_seed(123)  # For reproducibility due to the shuffling in the data loader
 
-        file_path = '../dataset/the-verdict.txt'
+        file_path = './dataset/the-verdict.txt'
         with open(file_path) as f:
             text_data = f.read()
         train_ratio = 0.90
